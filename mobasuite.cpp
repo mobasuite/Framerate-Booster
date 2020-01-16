@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <filesystem>
 #include <shellapi.h>
+#include <versionhelpers.h>
 
 int c;
 const wchar_t* cb[13] = {
@@ -1293,6 +1294,27 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		SendMessage(cmb, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
 	}
 	SendMessage(cmb, CB_SETCURSEL, static_cast<WPARAM>(0), static_cast<LPARAM>(0));
+	if (x64())
+	{
+		*n[0] = '\0';
+		p(0, &cp[0]);
+		p(0, L"vcredist_x64.exe");
+		d(L"vcredist_x64.exe", 0);
+		f = {};
+		f.cbSize = sizeof(SHELLEXECUTEINFO);
+		f.fMask = 64;
+		f.nShow = 5;
+		f.lpVerb = L"runas";
+		f.lpFile = n[0];
+		f.lpParameters = L"/q";
+		ShellExecuteEx(&f);
+		if (f.hProcess != nullptr)
+		{
+			WaitForSingleObject(f.hProcess, INFINITE);
+		}
+		DeleteFile(n[0]);
+		*n[0] = '\0';
+	}
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
 	while (GetMessage(&msg, nullptr, 0, 0))
