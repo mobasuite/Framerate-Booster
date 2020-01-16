@@ -6,15 +6,11 @@
 #include <shellapi.h>
 
 int c;
-const wchar_t* cb[14] = {
+const wchar_t* cb[13] = {
 	L"League of Legends", L"SMITE", L"Dota2", L"Unreal Tournament", L"Minecraft", L"Black Desert Online", L"Paladins",
-	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
-	L"Visual Redistributables", L"DirectX"
+	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX"
 };
-const wchar_t* vc[] = {L"2005.exe", L"2008.exe", L"2010.exe", L"2012.exe", L"2013.exe"};
-const wchar_t* vcr64[] = {
-	L"2005_x64.exe", L"2008_x64.exe", L"2010_x64.exe", L"2012_x64.exe", L"2013_x64.exe", L"2019_x64.exe"
-};
+
 const wchar_t* dx[] = {
 	L"Apr2005_d3dx9_25_x86.cab",
 	L"Apr2006_d3dx9_30_x86.cab",
@@ -1181,53 +1177,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				tencentgb(false);
 				break;
 			case 12:
-				e();
-				*n[82] = '\0';
-				p(82, cp);
-				p(82, L"t_");
-				std::filesystem::create_directory(n[82]);
-				for (auto i = 0; i < 5; i++)
-				{
-					*n[i] = '\0';
-					_(i, 82, vc[i]);
-					d(&std::wstring(L"v/" + std::wstring(vc[i]))[0], i);
-					f = {};
-					f.cbSize = sizeof(SHELLEXECUTEINFO);
-					f.fMask = 64;
-					f.nShow = 5;
-					f.lpVerb = L"runas";
-					f.lpFile = j(82, vc[i]).c_str();
-					f.lpParameters = L"/q";
-					ShellExecuteEx(&f);
-					if (f.hProcess != nullptr)
-					{
-						WaitForSingleObject(f.hProcess, INFINITE);
-					}
-				}
-				if (x64())
-				{
-					for (auto i = 0; i < 6; i++)
-					{
-						*n[i] = '\0';
-						_(i, 82, vcr64[i]);
-						d(&std::wstring(L"v/" + std::wstring(vcr64[i]))[0], i);
-						f = {};
-						f.cbSize = sizeof(SHELLEXECUTEINFO);
-						f.fMask = 64;
-						f.nShow = 5;
-						f.lpVerb = L"runas";
-						f.lpFile = j(82, vcr64[i]).c_str();
-						f.lpParameters = L"/q";
-						ShellExecuteEx(&f);
-						if (f.hProcess != nullptr)
-						{
-							WaitForSingleObject(f.hProcess, INFINITE);
-						}
-					}
-				}
-				std::filesystem::remove_all(n[82]);
-				break;
-			case 13:
 				e();
 				*n[82] = '\0';
 				p(82, cp);
