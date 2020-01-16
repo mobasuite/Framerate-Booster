@@ -1123,12 +1123,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (x64())
 				{
 					p(0, L"java13.exe");
-					d(L"jdk13.0.1.exe", 0);
+					d(L"jdk13.0.2.exe", 0);
 				}
 				else
 				{
 					p(0, L"java8.exe");
-					d(L"jre8u231.exe", 0);
+					d(L"jre8u241.exe", 0);
 				}
 				f = {};
 				f.cbSize = sizeof(SHELLEXECUTEINFO);
