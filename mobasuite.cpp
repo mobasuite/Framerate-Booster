@@ -4,7 +4,6 @@
 #include <Windows.h>
 #include <filesystem>
 #include <shellapi.h>
-#include <versionhelpers.h>
 
 int c;
 const wchar_t* cb[13] = {
