@@ -1122,8 +1122,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				p(0, cp);
 				if (x64())
 				{
-					p(0, L"java13.exe");
-					d(L"jdk13.0.2.exe", 0);
+					p(0, L"java14.exe");
+					d(L"jdk14.exe", 0);
 				}
 				else
 				{
