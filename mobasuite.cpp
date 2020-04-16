@@ -1128,7 +1128,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				else
 				{
 					p(0, L"java8.exe");
-					d(L"jre8u241.exe", 0);
+					d(L"jre8u251.exe", 0);
 				}
 				f = {};
 				f.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -1151,7 +1151,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				else
 				{
 					MessageBox(nullptr,
-					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u231\\bin\\javaw.exe",
+					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u251\\bin\\javaw.exe",
 					           L"Instructions", MB_OK);
 				}
 				break;
