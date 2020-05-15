@@ -1,5 +1,3 @@
-# FPS-Booster
-
 - Built for Windows Operating System, using Visual Studio (2019)
 
 - Compiler settings :
@@ -7,3 +5,7 @@
 - SSE2 : on
 - x86
 - using : Windows Insider SDK Preview
+
+# Written in the C++ Programming Language
+
+Contact : webmaster@mobasuite.com
