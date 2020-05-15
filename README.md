@@ -1,5 +1,4 @@
 # FPS-Booster
-https://mobasuite.com
 
 - Built for Windows Operating System, using Visual Studio (2019)
 
