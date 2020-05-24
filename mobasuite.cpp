@@ -7,7 +7,7 @@
 
 int c;
 const wchar_t* cb[13] = {
-	L"League of Legends", L"SMITE", L"Dota2", L"Unreal Tournament", L"Minecraft", L"Black Desert Online", L"Paladins",
+	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament", L"Minecraft", L"Black Desert Online", L"Paladins",
 	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX"
 };
 
@@ -1123,7 +1123,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (x64())
 				{
 					p(0, L"java14.exe");
-					d(L"jdk14.exe", 0);
+					d(L"java14.0.1.exe", 0);
 				}
 				else
 				{
@@ -1145,7 +1145,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (x64())
 				{
 					MessageBox(nullptr,
-					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-14\\bin\\javaw.exe",
+					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-14.0.1\\bin\\javaw.exe",
 					           L"Instructions", MB_OK);
 				}
 				else
@@ -1280,7 +1280,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		LoadIcon(hInstance, IDI_APPLICATION)
 	};
 	RegisterClassEx(&wcex);
-	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 420, 160,
+	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - https://mobasuite.com", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 420, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
