@@ -1,6 +1,6 @@
 - Built for Windows Operating System, using Visual Studio (2019)
 
-- Compiler settings :
+# Compiler settings :
 - Spectre-Mitigation : on
 - SSE2 : on
 - x86
