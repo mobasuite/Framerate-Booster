@@ -7,8 +7,10 @@
 
 int c;
 const wchar_t* cb[13] = {
-	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament", L"Minecraft", L"Black Desert Online", L"Paladins",
-	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX"
+	L"League of Legends", L"SMITE", L"DOTA 2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
+	L"Black Desert Online", L"Paladins",
+	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
+	L"DirectX-Unblocker"
 };
 
 const wchar_t* dx[] = {
@@ -1273,14 +1275,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int nShowCmd)
 {
 	MSG msg;
-	const wchar_t* szWindowClass = L"x86_win";
+	const wchar_t* szWindowClass = L"win_x86app";
 	WNDCLASSEX wcex{
 		sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, WndProc, 0, 0, hInstance, LoadIcon(hInstance, IDI_APPLICATION),
 		LoadCursor(nullptr, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), nullptr, szWindowClass,
 		LoadIcon(hInstance, IDI_APPLICATION)
 	};
 	RegisterClassEx(&wcex);
-	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - https://mobasuite.com", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 420, 160,
+	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - https://mobasuite.com", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+	                         CW_USEDEFAULT, 420, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
