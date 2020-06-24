@@ -606,13 +606,14 @@ void bdo(bool r)
 	}
 	if (r)
 	{
-		d(L"r/bdo/main/D3DCompiler_47.dll", 47);
-		d(L"r/bdo/main/D3DCompiler_47.dll", 57);
+		d(L"d3dcompiler_43.dll", 47);
+		d(L"d3dcompiler_46.dll", 57);
 	}
 	else
 	{
-		d(L"d3dcompiler_43.dll", 47);
-		d(L"d3dcompiler_46.dll", 57);
+		d(L"r/bdo/main/D3DCompiler_47.dll", 47);
+		d(L"r/bdo/main/D3DCompiler_47.dll", 57);
+
 	}
 
 	g(L"", L"bdo");
