@@ -8,7 +8,7 @@
 int c;
 const wchar_t* cb[13] = {
 	L"League of Legends", L"SMITE", L"DOTA 2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
-	L"Black Desert Online - Remastered", L"Paladins",
+	L"Black Desert Online Remastered", L"Paladins",
 	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
 	L"DirectX-Unblocker"
 };
@@ -1295,14 +1295,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 	};
 	RegisterClassEx(&wcex);
 	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - https://mobasuite.com", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-	                         CW_USEDEFAULT, 420, 160,
+	                         CW_USEDEFAULT, 470, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
-	CreateWindow(L"BUTTON", L"Restore", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 300, 10, 100,
+	CreateWindow(L"BUTTON", L"Restore", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
 	HWND cmb = CreateWindow(WC_COMBOBOX, L"COMBOBOX", CBS_DROPDOWN | LBS_SORT | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-	                        120, 10, 170, 340, hwnd, nullptr, hInstance, nullptr);
+	                        120, 10, 220, 360, hwnd, nullptr, hInstance, nullptr);
 	for (auto& i : cb)
 	{
 		SendMessage(cmb, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
