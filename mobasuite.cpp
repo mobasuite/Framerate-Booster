@@ -8,7 +8,7 @@
 int c;
 const wchar_t* cb[13] = {
 	L"League of Legends", L"SMITE", L"DOTA 2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
-	L"Black Desert Online", L"Paladins",
+	L"Black Desert Online - Remastered", L"Paladins",
 	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
 	L"DirectX-Unblocker"
 };
@@ -445,6 +445,7 @@ void g(std::wstring const& dir, std::wstring const& key)
 	_(54, 0, L"mfcm140u.dll");
 	_(55, 0, L"vcomp140.dll");
 	_(56, 0, L"vccorlib140.dll");
+	_(57, 0, L"d3dcompiler_46.dll");
 }
 
 void dota2(bool r)
@@ -548,10 +549,11 @@ void bdo(bool r)
 {
 	pc_end(L"BlackDesert32.exe");
 	pc_end(L"BlackDesert64.exe");
-	cfg(L"bd");
+	cfg(L"bdo");
 	g(L"bin", L"bdo");
 	if (r)
 	{
+		a(L"r/bdo/");
 		d(L"r/bdo/msvcp140.dll", 44);
 		d(L"r/bdo/ucrtbase.dll", 45);
 		d(L"r/bdo/vcruntime140.dll", 46);
@@ -561,10 +563,10 @@ void bdo(bool r)
 		d(L"r/bdo/mfcm140u.dll", 54);
 		d(L"r/bdo/vcomp140.dll", 55);
 		d(L"r/bdo/vccorlib140.dll", 56);
-		a(L"r/bdo/");
 	}
 	else
 	{
+		a(L"");
 		d(L"msvcp140.dll", 44);
 		d(L"ucrtbase.dll", 45);
 		d(L"vcruntime140.dll", 46);
@@ -574,7 +576,6 @@ void bdo(bool r)
 		d(L"mfcm140u.dll", 54);
 		d(L"vcomp140.dll", 55);
 		d(L"vccorlib140.dll", 56);
-		a(L"");
 	}
 	g(L"bin64", L"bdo");
 	if (r)
@@ -603,6 +604,17 @@ void bdo(bool r)
 		d(L"6/vccorlib140.dll", 56);
 		a(L"6/");
 	}
+	if (r)
+	{
+		d(L"r/bdo/main/D3DCompiler_47.dll", 47);
+		d(L"r/bdo/main/D3DCompiler_47.dll", 57);
+	}
+	else
+	{
+		d(L"d3dcompiler_43.dll", 47);
+		d(L"d3dcompiler_46.dll", 57);
+	}
+
 	g(L"", L"bdo");
 	f = {};
 	f.cbSize = sizeof(SHELLEXECUTEINFO);
