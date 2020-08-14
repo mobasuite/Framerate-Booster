@@ -10,7 +10,7 @@ const wchar_t* cb[13] = {
 	L"League of Legends", L"SMITE", L"DOTA 2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
 	L"Black Desert Online Remastered", L"Paladins",
 	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
-	L"DirectX-Unblocker"
+	L"DirectX Unblocked"
 };
 
 const wchar_t* dx[] = {
