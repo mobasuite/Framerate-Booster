@@ -1137,8 +1137,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				p(0, cp);
 				if (x64())
 				{
-					p(0, L"java14.exe");
-					d(L"jdk-14.0.2.exe", 0);
+					p(0, L"java15.exe");
+					d(L"jdk-15.exe", 0);
 				}
 				else
 				{
@@ -1160,7 +1160,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				if (x64())
 				{
 					MessageBox(nullptr,
-					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-14.0.2\\bin\\javaw.exe",
+					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-15\\bin\\javaw.exe",
 					           L"Instructions", MB_OK);
 				}
 				else
