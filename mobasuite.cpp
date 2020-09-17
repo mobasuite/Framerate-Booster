@@ -7,7 +7,7 @@
 
 int c;
 const wchar_t* cb[13] = {
-	L"League of Legends", L"SMITE", L"DOTA 2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
+	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
 	L"Black Desert Online Remastered", L"Paladins",
 	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
 	L"DirectX Unblocked"
@@ -1295,7 +1295,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		LoadIcon(hInstance, IDI_APPLICATION)
 	};
 	RegisterClassEx(&wcex);
-	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - https://mobasuite.com", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - Framerate Enhancer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 	                         CW_USEDEFAULT, 470, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
