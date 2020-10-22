@@ -6,11 +6,8 @@
 #include <shellapi.h>
 
 int c;
-const wchar_t* cb[13] = {
-	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java)",
-	L"Black Desert Online Remastered", L"Paladins",
-	L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy",
-	L"DirectX Unblocked"
+const wchar_t* combobox[13] = {
+	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java Edition)", L"Black Desert Online Remastered", L"Paladins", L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX Unblocked"
 };
 
 const wchar_t* dx[] = {
@@ -1143,7 +1140,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				else
 				{
 					p(0, L"java8.exe");
-					d(L"jre-8u261.exe", 0);
+					d(L"jre-8u271.exe", 0);
 				}
 				f = {};
 				f.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -1166,7 +1163,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				else
 				{
 					MessageBox(nullptr,
-					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u261\\bin\\javaw.exe",
+					           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u271\\bin\\javaw.exe",
 					           L"Instructions", MB_OK);
 				}
 				break;
@@ -1288,14 +1285,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int nShowCmd)
 {
 	MSG msg;
-	const wchar_t* szWindowClass = L"win_x86app";
+	const wchar_t* szWindowClass = L"x86app_win";
 	WNDCLASSEX wcex{
 		sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, WndProc, 0, 0, hInstance, LoadIcon(hInstance, IDI_APPLICATION),
 		LoadCursor(nullptr, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), nullptr, szWindowClass,
 		LoadIcon(hInstance, IDI_APPLICATION)
 	};
 	RegisterClassEx(&wcex);
-	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite - Framerate Enhancer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
+	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 	                         CW_USEDEFAULT, 470, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
@@ -1304,7 +1301,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 	             100, hwnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
 	HWND cmb = CreateWindow(WC_COMBOBOX, L"COMBOBOX", CBS_DROPDOWN | LBS_SORT | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
 	                        120, 10, 220, 360, hwnd, nullptr, hInstance, nullptr);
-	for (auto& i : cb)
+	for (auto& i : combobox)
 	{
 		SendMessage(cmb, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
 	}
