@@ -4,9 +4,10 @@
 #include <Windows.h>
 #include <filesystem>
 #include <shellapi.h>
+#include <CommCtrl.h>
 
 int c;
-const wchar_t* combobox[13] = {
+const wchar_t* cmbbox[13] = {
 	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java Edition)", L"Black Desert Online Remastered", L"Paladins", L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX Unblocked"
 };
 
@@ -1299,13 +1300,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 	             100, hwnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Restore", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
-	HWND cmb = CreateWindow(WC_COMBOBOX, L"COMBOBOX", CBS_DROPDOWN | LBS_SORT | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-	                        120, 10, 220, 360, hwnd, nullptr, hInstance, nullptr);
-	for (auto& i : combobox)
+	HWND hWndComboBox = CreateWindow(WC_COMBOBOX, L"",
+		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+		120, 10, 220, 360, hwnd, NULL, hInstance,
+		NULL);
+	for (auto& i : cmbbox)
 	{
-		SendMessage(cmb, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
+		SendMessage(hWndComboBox, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
 	}
-	SendMessage(cmb, CB_SETCURSEL, static_cast<WPARAM>(0), static_cast<LPARAM>(0));
+	SendMessage(hWndComboBox, CB_SETCURSEL, static_cast<WPARAM>(0), static_cast<LPARAM>(0));
 	if (x64())
 	{
 		*n[0] = '\0';
