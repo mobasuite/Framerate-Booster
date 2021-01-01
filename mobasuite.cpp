@@ -947,6 +947,7 @@ void LoL(bool r)
 		d(L"r/lol/vcruntime140.dll", 45);
 		d(L"r/lol/ucrtbase.dll", 46);
 		d(L"r/lol/msvcp140.dll", 47);
+		d(L"r/lol/D3DCompiler_43.dll", 49);
 		d(L"r/lol/d3dcompiler_47.dll", 50);
 	}
 	else
