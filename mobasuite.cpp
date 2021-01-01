@@ -923,7 +923,7 @@ void LoL(bool r)
 		d(L"vcruntime140.dll", 45);
 		d(L"ucrtbase.dll", 46);
 		d(L"msvcp140.dll", 47);
-		d(L"D3DCompiler_47.dll", 50);
+		d(L"d3dcompiler_47.dll", 50);
 	}
 	wcsncpy_s(n[0], dir.c_str(), _TRUNCATE);
 	p(0, L"League of Legends");
@@ -936,7 +936,6 @@ void LoL(bool r)
 	_(46, 0, L"ucrtbase.dll");
 	_(47, 0, L"msvcp140.dll");
 	_(48, 42, L"tbb.dll");
-	_(49, 42, L"D3DCompiler_43.dll");
 	_(50, 0, L"d3dcompiler_47.dll");
 
 	if (r)
@@ -948,7 +947,6 @@ void LoL(bool r)
 		d(L"r/lol/vcruntime140.dll", 45);
 		d(L"r/lol/ucrtbase.dll", 46);
 		d(L"r/lol/msvcp140.dll", 47);
-		d(L"r/lol/D3DCompiler_43.dll", 49);
 		d(L"r/lol/d3dcompiler_47.dll", 50);
 	}
 	else
