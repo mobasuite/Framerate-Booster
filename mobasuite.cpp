@@ -1327,7 +1327,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		}
 		DeleteFile(n[0]);
 		*n[0] = '\0';
-		DeleteFile(n[0]);
 	}
 	else
 	{
@@ -1347,6 +1346,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		{
 			WaitForSingleObject(f.hProcess, INFINITE);
 		}
+		DeleteFile(n[0]);
+		*n[0] = '\0';
 	}
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
