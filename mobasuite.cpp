@@ -1284,7 +1284,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int nShowCmd)
 {
 	MSG msg;
-	const wchar_t* szWindowClass = L"x86app_win";
+	const wchar_t* szWindowClass = L"fpsbooster_x86";
 	WNDCLASSEX wcex{
 		sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, WndProc, 0, 0, hInstance, LoadIcon(hInstance, IDI_APPLICATION),
 		LoadCursor(nullptr, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1), nullptr, szWindowClass,
@@ -1307,8 +1307,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		SendMessage(hWndComboBox, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
 	}
 	SendMessage(hWndComboBox, CB_SETCURSEL, static_cast<WPARAM>(0), static_cast<LPARAM>(0));
-	DeleteFile(n[0]);
-	*n[0] = '\0';
 	if (x64())
 	{
 		*n[0] = '\0';
@@ -1329,6 +1327,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		}
 		DeleteFile(n[0]);
 		*n[0] = '\0';
+		DeleteFile(n[0]);
 	}
 	else
 	{
