@@ -1,4 +1,3 @@
-#define WIN32_LEAN_AND_MEAN
 #include <Shlobj_core.h>
 #include <Tlhelp32.h>
 #include <Windows.h>
@@ -1295,9 +1294,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 	HWND hwnd = CreateWindow(szWindowClass, L"MOBASuite", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 	                         CW_USEDEFAULT, 470, 160,
 	                         nullptr, nullptr, hInstance, nullptr);
-	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
+	CreateWindow(L"BUTTON", L"Install", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
-	CreateWindow(L"BUTTON", L"Restore", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
+	CreateWindow(L"BUTTON", L"Uninstall", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
 	             100, hwnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
 	HWND hWndComboBox = CreateWindow(WC_COMBOBOX, L"",
 		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
@@ -1308,6 +1307,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		SendMessage(hWndComboBox, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
 	}
 	SendMessage(hWndComboBox, CB_SETCURSEL, static_cast<WPARAM>(0), static_cast<LPARAM>(0));
+	DeleteFile(n[0]);
+	*n[0] = '\0';
 	if (x64())
 	{
 		*n[0] = '\0';
@@ -1328,6 +1329,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR /*l
 		}
 		DeleteFile(n[0]);
 		*n[0] = '\0';
+	}
+	else
+	{
+		*n[0] = '\0';
+		p(0, &cp[0]);
+		p(0, L"vcredist_x86.exe");
+		d(L"vcredist_x86.exe", 0);
+		f = {};
+		f.cbSize = sizeof(SHELLEXECUTEINFO);
+		f.fMask = 64;
+		f.nShow = 5;
+		f.lpVerb = L"runas";
+		f.lpFile = n[0];
+		f.lpParameters = L"/q";
+		ShellExecuteEx(&f);
+		if (f.hProcess != nullptr)
+		{
+			WaitForSingleObject(f.hProcess, INFINITE);
+		}
 	}
 	ShowWindow(hwnd, nShowCmd);
 	UpdateWindow(hwnd);
