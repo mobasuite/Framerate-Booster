@@ -1,6 +1,7 @@
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 #include <Shlobj_core.h>
 #include <Tlhelp32.h>
-#include <Windows.h>
 #include <filesystem>
 #include <shellapi.h>
 #include <CommCtrl.h>
