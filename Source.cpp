@@ -649,7 +649,7 @@ void eso(bool r)
 	}
 	else
 	{
-		d(L"tbb.dll", 1);
+		d(L"tbb12.dll", 1);
 		d(L"tbbmalloc.dll", 2);
 		d(L"6/D3DCompiler_47.dll", 3);
 		d(L"D3DCompiler_47.dll", 4);
@@ -701,7 +701,7 @@ void wt(bool r)
 	{
 		d(L"concrt140.dll", 41);
 		d(L"msvcp140.dll", 42);
-		d(L"tbb.dll", 43);
+		d(L"tbb12.dll", 43);
 		d(L"vcruntime140.dll", 44);
 		d(L"ucrtbase.dll", 46);
 		p(0, L"system");
