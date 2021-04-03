@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{2aad1f59-d332-41bc-b6a6-39904b1c0f44}</ProjectGuid>
     <RootNamespace>MOBASuite</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.20308.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.20324.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
