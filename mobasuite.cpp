@@ -1125,7 +1125,7 @@ void java_mc()
 	if (x64())
 	{
 		p(0, L"java15.exe");
-		d(L"jdk-15.0.2_windows-x64_bin.exe", 0);
+		d(L"jdk-16_windows-x64_bin.exe", 0);
 	}
 	else
 	{
@@ -1147,7 +1147,7 @@ void java_mc()
 	if (x64())
 	{
 		MessageBox(nullptr,
-			L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-15.0.2\\bin\\javaw.exe",
+			L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16\\bin\\javaw.exe",
 			L"Instructions", MB_OK);
 	}
 	else
