@@ -7,15 +7,15 @@
 #define MAX_LOADSTRING 100
 
 // Global Variables:
-HINSTANCE hInst;                                // current instance
-WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+HINSTANCE hInst; // current instance
+WCHAR szTitle[MAX_LOADSTRING]; // The title bar text
+WCHAR szWindowClass[MAX_LOADSTRING]; // the main window class name
 
 // Forward declarations of functions included in this code module:
-ATOM                MyRegisterClass(HINSTANCE hInstance);
-BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+ATOM MyRegisterClass(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE, int);
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
 
 const wchar_t* dx[] = {
@@ -225,7 +225,9 @@ std::wstring cp = std::filesystem::current_path();
 SHELLEXECUTEINFO pi;
 int c;
 const wchar_t* cmbbox[13] = {
-	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java Edition)", L"Black Desert Online Remastered", L"Paladins", L"World of Tanks", L"World of Warships", L"Lineage II", L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX Unblocked"
+	L"League of Legends", L"SMITE", L"DOTA2", L"Unreal Tournament (Pre-Alpha)", L"Minecraft (Java Edition)",
+	L"Black Desert Online Remastered", L"Paladins", L"World of Tanks", L"World of Warships", L"Lineage II",
+	L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX Unblocked"
 };
 
 void unblock_file(std::wstring file)
@@ -233,28 +235,28 @@ void unblock_file(std::wstring file)
 	DeleteFile(file.append(L":Zone.Identifier").c_str());
 }
 
-auto j(const int j, std::wstring const& add) -> std::wstring
+std::wstring j(const int j, const std::wstring& add)
 {
 	std::filesystem::path p = n[j];
 	std::filesystem::path f = p / add;
 	return f.c_str();
 }
 
-void p(const int j, std::wstring const& add)
+void p(const int j, const std::wstring& add)
 {
 	std::filesystem::path p = n[j];
 	std::filesystem::path f = p / add;
 	wcsncpy_s(n[j], f.c_str(), _TRUNCATE);
 }
 
-void _(const int j, const int k, std::wstring const& add)
+void _(const int j, const int k, const std::wstring& add)
 {
 	std::filesystem::path p = n[k];
 	std::filesystem::path f = p / add;
 	wcsncpy_s(n[j], f.c_str(), _TRUNCATE);
 }
 
-void cf(const int i, const int k, std::wstring const& add)
+void cf(const int i, const int k, const std::wstring& add)
 {
 	copy_file(n[i], j(k, add), std::filesystem::copy_options::overwrite_existing);
 }
@@ -273,7 +275,7 @@ void v(const int j)
 	}
 }
 
-void pc_end(std::wstring const& name)
+void pc_end(const std::wstring& name)
 {
 	HANDLE snapshot = CreateToolhelp32Snapshot(2, 0);
 	PROCESSENTRY32 process;
@@ -286,7 +288,7 @@ void pc_end(std::wstring const& name)
 			if (process.szExeFile == name)
 			{
 				snapshot = OpenProcess(SYNCHRONIZE | PROCESS_TERMINATE, 1,
-					process.th32ProcessID);
+				                       process.th32ProcessID);
 				TerminateProcess(snapshot, 0);
 				break;
 			}
@@ -295,7 +297,7 @@ void pc_end(std::wstring const& name)
 	CloseHandle(snapshot);
 }
 
-void d(std::wstring const& url, const int j)
+void d(const std::wstring& url, const int j)
 {
 	URLDownloadToFile(nullptr, std::wstring(L"https://mobasuite.com/" + url).c_str(), n[j], NULL, nullptr);
 	unblock_file(n[j]);
@@ -310,7 +312,7 @@ void a(const wchar_t* url)
 	}
 }
 
-auto x64() -> bool
+bool x64()
 {
 	USHORT pProcessMachine;
 	USHORT pNativeMachine;
@@ -404,8 +406,8 @@ void e()
 	PSID group = nullptr;
 	SID_IDENTIFIER_AUTHORITY auth = SECURITY_NT_AUTHORITY;
 	if (AllocateAndInitializeSid(&auth, 2, SECURITY_BUILTIN_DOMAIN_RID,
-		DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
-		&group) == 0)
+	                             DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0,
+	                             &group) == 0)
 	{
 		if (group != nullptr)
 		{
@@ -430,7 +432,7 @@ void e()
 	}
 }
 
-void g(std::wstring const& dir, std::wstring const& key)
+void g(const std::wstring& dir, const std::wstring& key)
 {
 	for (int i = 0; i < 57; i++)
 	{
@@ -620,7 +622,6 @@ void bdo(bool r)
 	{
 		d(L"D3DCompiler_47.dll", 47);
 		d(L"D3DCompiler_47.dll", 57);
-
 	}
 
 	g(L"", L"bdo");
@@ -893,7 +894,6 @@ void LoL(bool r)
 	_(47, 0, L"msvcp140.dll");
 
 
-
 	if (r)
 	{
 		a(L"r/lol");
@@ -1141,14 +1141,14 @@ void java_mc()
 	if (x64())
 	{
 		MessageBox(nullptr,
-			L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16\\bin\\javaw.exe",
-			L"Instructions", MB_OK);
+		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16\\bin\\javaw.exe",
+		           L"Instructions", MB_OK);
 	}
 	else
 	{
 		MessageBox(nullptr,
-			L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u281\\bin\\javaw.exe",
-			L"Instructions", MB_OK);
+		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u281\\bin\\javaw.exe",
+		           L"Instructions", MB_OK);
 	}
 }
 
@@ -1247,9 +1247,9 @@ void boot_sequence()
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-	_In_opt_ HINSTANCE hPrevInstance,
-	_In_ LPWSTR    lpCmdLine,
-	_In_ int       nCmdShow)
+                      _In_opt_ HINSTANCE hPrevInstance,
+                      _In_ LPWSTR lpCmdLine,
+                      _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
@@ -1279,9 +1279,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 	}
 
-	return (int)msg.wParam;
+	return static_cast<int>(msg.wParam);
 }
-
 
 
 //
@@ -1326,17 +1325,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // Store instance handle in our global variable
 
 	HWND hWnd = CreateWindow(szWindowClass, L"MOBASuite", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
-		CW_USEDEFAULT, 470, 180,
-		nullptr, nullptr, hInstance, nullptr);
+	                         CW_USEDEFAULT, 470, 180,
+	                         nullptr, nullptr, hInstance, nullptr);
 
 	CreateWindow(L"BUTTON", L"Install", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
-		100, hWnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
+	             100, hWnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
 	CreateWindow(L"BUTTON", L"Uninstall", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
-		100, hWnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
+	             100, hWnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
 	HWND hWndComboBox = CreateWindow(WC_COMBOBOX, L"",
-		CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
-		120, 10, 220, 360, hWnd, NULL, hInstance,
-		NULL);
+	                                 CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
+	                                 120, 10, 220, 360, hWnd, NULL, hInstance,
+	                                 NULL);
 	for (auto& i : cmbbox)
 	{
 		SendMessage(hWndComboBox, CB_ADDSTRING, static_cast<WPARAM>(0), reinterpret_cast<LPARAM>(i));
@@ -1369,120 +1368,120 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_COMMAND:
-	{
-		if (HIWORD(wParam) == CBN_SELCHANGE)
 		{
-			c = SendMessage(reinterpret_cast<HWND>(lParam), static_cast<UINT>(CB_GETCURSEL), static_cast<WPARAM>(0),
-				static_cast<LPARAM>(0));
-		}
-		if (LOWORD(wParam) == 1)
-		{
-			switch (c)
+			if (HIWORD(wParam) == CBN_SELCHANGE)
 			{
-			case 0:
-				LoL(false);
-				break;
-			case 1:
-				smite(false);
-				break;
-			case 2:
-				dota2(false);
-				break;
-			case 3:
-				ut(false);
-				break;
-			case 4:
-				java_mc();
-				break;
-			case 5:
-				bdo(false);
-				break;
-			case 6:
-				pala(false);
-				break;
-			case 7:
-				wt(false);
-				break;
-			case 8:
-				wws(false);
-				break;
-			case 9:
-				lineage(false);
-				break;
-			case 10:
-				eso(false);
-				break;
-			case 11:
-				tencentgb(false);
-				break;
-			case 12:
-				dx_unblocked();
-				break;
-			default:;
+				c = SendMessage(reinterpret_cast<HWND>(lParam), static_cast<UINT>(CB_GETCURSEL), static_cast<WPARAM>(0),
+				                static_cast<LPARAM>(0));
 			}
-		}
-		if (LOWORD(wParam) == 2)
-		{
-			switch (c)
+			if (LOWORD(wParam) == 1)
 			{
-			case 0:
-				LoL(true);
-				break;
-			case 1:
-				smite(true);
-				break;
-			case 2:
-				dota2(true);
-				break;
-			case 3:
-				ut(true);
-				break;
-			case 5:
-				bdo(true);
-				break;
-			case 6:
-				pala(true);
-				break;
-			case 7:
-				wt(true);
-				break;
-			case 8:
-				wws(true);
-				break;
-			case 9:
-				lineage(true);
-				break;
-			case 10:
-				eso(true);
-				break;
-			case 11:
-				tencentgb(true);
-				break;
+				switch (c)
+				{
+				case 0:
+					LoL(false);
+					break;
+				case 1:
+					smite(false);
+					break;
+				case 2:
+					dota2(false);
+					break;
+				case 3:
+					ut(false);
+					break;
+				case 4:
+					java_mc();
+					break;
+				case 5:
+					bdo(false);
+					break;
+				case 6:
+					pala(false);
+					break;
+				case 7:
+					wt(false);
+					break;
+				case 8:
+					wws(false);
+					break;
+				case 9:
+					lineage(false);
+					break;
+				case 10:
+					eso(false);
+					break;
+				case 11:
+					tencentgb(false);
+					break;
+				case 12:
+					dx_unblocked();
+					break;
+				default: ;
+				}
 			}
-		}
+			if (LOWORD(wParam) == 2)
+			{
+				switch (c)
+				{
+				case 0:
+					LoL(true);
+					break;
+				case 1:
+					smite(true);
+					break;
+				case 2:
+					dota2(true);
+					break;
+				case 3:
+					ut(true);
+					break;
+				case 5:
+					bdo(true);
+					break;
+				case 6:
+					pala(true);
+					break;
+				case 7:
+					wt(true);
+					break;
+				case 8:
+					wws(true);
+					break;
+				case 9:
+					lineage(true);
+					break;
+				case 10:
+					eso(true);
+					break;
+				case 11:
+					tencentgb(true);
+					break;
+				}
+			}
 
-		int wmId = LOWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+			int wmId = LOWORD(wParam);
+			// Parse the menu selections:
+			switch (wmId)
+			{
+			case IDM_ABOUT:
+				DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+				break;
+			case IDM_EXIT:
+				DestroyWindow(hWnd);
+				break;
+			default:
+				return DefWindowProc(hWnd, message, wParam, lParam);
+			}
 		}
-	}
 	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code that uses hdc here...
-		EndPaint(hWnd, &ps);
-	}
-	break;
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps);
+			// TODO: Add any drawing code that uses hdc here...
+			EndPaint(hWnd, &ps);
+		}
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
@@ -1499,15 +1498,15 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
+		return TRUE;
 
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
+			return TRUE;
 		}
 		break;
 	}
-	return (INT_PTR)FALSE;
+	return FALSE;
 }
