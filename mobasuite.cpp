@@ -3,6 +3,7 @@
 
 #include "framework.h"
 #include "mobasuite.h"
+using namespace std::filesystem;
 
 #define MAX_LOADSTRING 100
 
@@ -98,7 +99,7 @@ const wchar_t* dx[] = {
 	L"OCT2006_XACT_x86.cab"
 };
 
-const wchar_t* dx64[] = {
+const wchar_t* dx_64[] = {
 	L"Apr2005_d3dx9_25_x64.cab",
 	L"Apr2006_d3dx9_30_x64.cab",
 	L"Apr2006_XACT_x64.cab",
@@ -176,7 +177,7 @@ const wchar_t* dx64[] = {
 	L"OCT2006_XACT_x64.cab"
 };
 
-const wchar_t* _a[] = {
+const wchar_t* apimswincore[] = {
 	L"api-ms-win-core-console-l1-1-0.dll",
 	L"api-ms-win-core-datetime-l1-1-0.dll",
 	L"api-ms-win-core-debug-l1-1-0.dll",
@@ -221,7 +222,7 @@ const wchar_t* _a[] = {
 
 // Variables
 wchar_t n[83][MAX_PATH + 1];
-std::wstring cp = std::filesystem::current_path();
+std::wstring cp = current_path();
 SHELLEXECUTEINFO pi;
 int c;
 const wchar_t* cmbbox[13] = {
@@ -230,52 +231,38 @@ const wchar_t* cmbbox[13] = {
 	L"The Elder Scrolls Online", L"Tencent Gaming-Buddy", L"DirectX Unblocked"
 };
 
-void unblock_file(std::wstring file)
+void unblockfile(std::wstring file)
 {
 	DeleteFile(file.append(L":Zone.Identifier").c_str());
 }
 
 std::wstring j(const int j, const std::wstring& add)
 {
-	std::filesystem::path p = n[j];
-	std::filesystem::path f = p / add;
+	path p = n[j];
+	path f = p / add;
 	return f.c_str();
 }
 
 void p(const int j, const std::wstring& add)
 {
-	std::filesystem::path p = n[j];
-	std::filesystem::path f = p / add;
+	path p = n[j];
+	path f = p / add;
 	wcsncpy_s(n[j], f.c_str(), _TRUNCATE);
 }
 
 void _(const int j, const int k, const std::wstring& add)
 {
-	std::filesystem::path p = n[k];
-	std::filesystem::path f = p / add;
+	path p = n[k];
+	path f = p / add;
 	wcsncpy_s(n[j], f.c_str(), _TRUNCATE);
 }
 
 void cf(const int i, const int k, const std::wstring& add)
 {
-	copy_file(n[i], j(k, add), std::filesystem::copy_options::overwrite_existing);
+	copy_file(n[i], j(k, add), copy_options::overwrite_existing);
 }
 
-void v(const int j)
-{
-	WIN32_FIND_DATA fd;
-	const auto find = FindFirstFile(std::wstring(n[j] + std::wstring(L"\\*.*")).c_str(), &fd);
-	if (find != INVALID_HANDLE_VALUE)
-	{
-		while (FindNextFile(find, &fd))
-		{
-		}
-		p(j, fd.cFileName);
-		FindClose(find);
-	}
-}
-
-void pc_end(const std::wstring& name)
+void process_end(const std::wstring& name)
 {
 	HANDLE snapshot = CreateToolhelp32Snapshot(2, 0);
 	PROCESSENTRY32 process;
@@ -297,22 +284,22 @@ void pc_end(const std::wstring& name)
 	CloseHandle(snapshot);
 }
 
-void d(const std::wstring& url, const int j)
+void download_file(const std::wstring& url, const int j)
 {
 	URLDownloadToFile(nullptr, std::wstring(L"https://mobasuite.com/" + url).c_str(), n[j], NULL, nullptr);
-	unblock_file(n[j]);
+	unblockfile(n[j]);
 }
 
-void a(const wchar_t* url)
+void apimswincore_bulkdownload(const wchar_t* url)
 {
 	for (int i = 0; i < 40; i++)
 	{
-		_(i + 1, 0, _a[i]);
-		d(&std::wstring(url + std::wstring(_a[i]))[0], i + 1);
+		_(i + 1, 0, apimswincore[i]);
+		download_file(&std::wstring(url + std::wstring(apimswincore[i]))[0], i + 1);
 	}
 }
 
-bool x64()
+bool determine_archx64()
 {
 	USHORT pProcessMachine;
 	USHORT pNativeMachine;
@@ -323,7 +310,7 @@ bool x64()
 	) != 0;
 }
 
-void cfg(const std::wstring& key)
+void ini_cfg(const std::wstring& key)
 {
 	*n[0] = '\0';
 	*n[82] = '\0';
@@ -336,15 +323,15 @@ void cfg(const std::wstring& key)
 		i.ulFlags = 64 | 256 | 512 | 32768;
 		if (key == L"ll")
 		{
-			i.lpszTitle = L"<drive>\\Riot Games\\ , Program Files\\TencentGame\\LOL , Garena\\Games\\<lolgame>";
+			i.lpszTitle = L"<drive>\\Riot Games\\ , <program files>\\TencentGame\\LOL , Garena\\Games\\<lolgame>";
 		}
-		if (key == L"d2" || key == L"sm" || key == L"pl")
+		if (key == L"dota2" || key == L"sm" || key == L"pl")
 		{
-			i.lpszTitle = L"Program Files (x86)\\Steam";
+			i.lpszTitle = L"<program files>\\Steam";
 		}
 		if (key == L"tgb")
 		{
-			i.lpszTitle = L"Program Files\\TxGameAssistant\\AppMarket";
+			i.lpszTitle = L"<program files>\\TxGameAssistant\\AppMarket";
 		}
 		if (key == L"es")
 		{
@@ -352,11 +339,11 @@ void cfg(const std::wstring& key)
 		}
 		if (key == L"ut")
 		{
-			i.lpszTitle = L"Program\\Epic Games";
+			i.lpszTitle = L"<program files>\\Epic Games";
 		}
 		if (key == L"l2")
 		{
-			i.lpszTitle = L"Program Files (x86)\\NCSOFT";
+			i.lpszTitle = L"<program files>\\NCSOFT";
 		}
 		if (key == L"wt")
 		{
@@ -368,7 +355,7 @@ void cfg(const std::wstring& key)
 		}
 		if (key == L"bd")
 		{
-			i.lpszTitle = L"Program files(x86)\\Black Desert Online";
+			i.lpszTitle = L"<program files>\\Black Desert Online";
 		}
 		const auto dl = SHBrowseForFolderW(&i);
 		if (dl == nullptr)
@@ -376,7 +363,8 @@ void cfg(const std::wstring& key)
 			_exit(0);
 		}
 		SHGetPathFromIDListW(dl, n[0]);
-		if (key == L"d2")
+
+		if (key == L"dota2")
 		{
 			p(0, L"steamapps\\common\\dota 2 beta\\game\\bin");
 		}
@@ -400,7 +388,7 @@ void cfg(const std::wstring& key)
 	}
 }
 
-void e()
+void elevate_process()
 {
 	BOOL admin = FALSE;
 	PSID group = nullptr;
@@ -426,19 +414,19 @@ void e()
 		pi.lpVerb = L"runas";
 		pi.lpFile = my;
 		pi.lpDirectory = cp.c_str();
-		pi.nShow = 1;
+		pi.nShow = SW_SHOW;
 		ShellExecuteEx(&pi);
 		_exit(0);
 	}
 }
 
-void g(const std::wstring& dir, const std::wstring& key)
+void game(const std::wstring& dir, const std::wstring& key)
 {
 	for (int i = 0; i < 57; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(key);
+	ini_cfg(key);
 	p(0, dir);
 	_(41, 0, L"D3DCompiler_42.dll");
 	_(42, 0, L"d3dx9_42.dll");
@@ -457,48 +445,48 @@ void g(const std::wstring& dir, const std::wstring& key)
 	_(57, 0, L"d3dcompiler_46.dll");
 }
 
-void dota2(bool r)
+void dota2(bool restore)
 {
-	pc_end(L"dota2.exe");
-	if (x64())
+	process_end(L"dota2.exe");
+	if (determine_archx64())
 	{
 		*n[1] = '\0';
 		*n[2] = '\0';
-		cfg(L"d2");
+		ini_cfg(L"dota2");
 		p(0, L"win64");
 		_(1, 0, L"d3dcompiler_43.dll");
 		_(2, 0, L"embree.dll");
-		unblock_file(j(0, L"dota2.exe"));
-		if (r)
+		unblockfile(j(0, L"dota2.exe"));
+		if (restore)
 		{
-			d(L"r/dota/x64/d3dcompiler_43.dll", 1);
-			d(L"r/dota/x64/embree.dll", 2);
+			download_file(L"r/dota/x64/d3dcompiler_43.dll", 1);
+			download_file(L"r/dota/x64/embree.dll", 2);
 		}
 		else
 		{
-			d(L"6/D3DCompiler_47.dll", 1);
-			d(L"6/embree.dll", 2);
+			download_file(L"6/D3DCompiler_47.dll", 1);
+			download_file(L"6/embree.dll", 2);
 		}
 	}
 	*n[1] = '\0';
-	cfg(L"d2");
+	ini_cfg(L"dota2");
 	p(0, L"win32");
 	_(1, 0, L"d3dcompiler_43.dll");
-	unblock_file(j(0, L"dota2.exe"));
-	if (r)
+	unblockfile(j(0, L"dota2.exe"));
+	if (restore)
 	{
-		d(L"r/dota/d3dcompiler_43.dll", 1);
+		download_file(L"r/dota/d3dcompiler_43.dll", 1);
 	}
 	else
 	{
-		d(L"D3DCompiler_47.dll", 1);
+		download_file(L"D3DCompiler_47.dll", 1);
 	}
-	cfg(L"d2");
+	ini_cfg(L"dota2");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
 	pi.nShow = 5;
-	if (x64())
+	if (determine_archx64())
 	{
 		p(0, L"win64");
 	}
@@ -510,36 +498,36 @@ void dota2(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void lineage(bool r)
+void lineage(bool restore)
 {
 	for (auto i = 0; i < 8; i++)
 	{
 		*n[i] = '\0';
 	}
-	pc_end(L"NCLauncherR.exe");
-	pc_end(L"NCLauncher.exe");
-	pc_end(L"L2.bin");
-	cfg(L"l2");
+	process_end(L"NCLauncherR.exe");
+	process_end(L"NCLauncher.exe");
+	process_end(L"L2.bin");
+	ini_cfg(L"l2");
 	p(0, L"System");
-	unblock_file(j(0, L"L2.bin"));
+	unblockfile(j(0, L"L2.bin"));
 	_(1, 0, L"d3dcompiler_43.dll");
 	_(2, 0, L"d3dcompiler_47.dll");
 	_(3, 0, L"D3DX9_40.dll");
 	_(4, 0, L"vcomp120.dll");
 	_(6, 0, L"plugins");
-	if (r)
+	if (restore)
 	{
-		d(L"r/l2/d3dcompiler_43.dll", 1);
-		d(L"r/l2/d3dcompiler_47.dll", 2);
-		d(L"r/l2/D3DX9_40.dll", 3);
-		d(L"r/l2/vcomp120.dll", 4);
+		download_file(L"r/l2/d3dcompiler_43.dll", 1);
+		download_file(L"r/l2/d3dcompiler_47.dll", 2);
+		download_file(L"r/l2/D3DX9_40.dll", 3);
+		download_file(L"r/l2/vcomp120.dll", 4);
 	}
 	else
 	{
-		d(L"D3DCompiler_47.dll", 1);
-		d(L"D3DCompiler_47.dll", 2);
-		d(L"D3DX9_43.dll", 3);
-		d(L"vcomp120.dll", 4);
+		download_file(L"D3DCompiler_47.dll", 1);
+		download_file(L"D3DCompiler_47.dll", 2);
+		download_file(L"D3DX9_43.dll", 3);
+		download_file(L"vcomp120.dll", 4);
 	}
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -548,83 +536,82 @@ void lineage(bool r)
 	*n[0] = '\0';
 	SHGetSpecialFolderPathW(nullptr, n[0], 42, 0);
 	pi.lpVerb = L"runas";
-	pi.lpParameters =
-		L"/LauncherID:\"NCWest\" /CompanyID:\"12\" /GameID:\"LINEAGE2\" /LUpdateAddr:\"updater.nclauncher.ncsoft.com\"";
+	pi.lpParameters = L"/LauncherID:\"NCWest\" /CompanyID:\"12\" /GameID:\"LINEAGE2\" /LUpdateAddr:\"updater.nclauncher.ncsoft.com\"";
 	pi.lpFile = j(0, L"NCWest\\NCLauncher\\NCLauncher.exe").c_str();
 	ShellExecuteEx(&pi);
 }
 
-void bdo(bool r)
+void blackdesertonline_remastered(bool restore)
 {
-	pc_end(L"BlackDesert32.exe");
-	pc_end(L"BlackDesert64.exe");
-	cfg(L"bdo");
-	g(L"bin", L"bdo");
-	if (r)
+	process_end(L"BlackDesert32.exe");
+	process_end(L"BlackDesert64.exe");
+	ini_cfg(L"bdo");
+	game(L"bin", L"bdo");
+	if (restore)
 	{
-		a(L"r/bdo/");
-		d(L"r/bdo/msvcp140.dll", 44);
-		d(L"r/bdo/ucrtbase.dll", 45);
-		d(L"r/bdo/vcruntime140.dll", 46);
-		d(L"r/bdo/D3DCompiler_43.dll", 47);
-		d(L"r/bdo/concrt140.dll", 49);
-		d(L"r/bdo/mfc140u.dll", 53);
-		d(L"r/bdo/mfcm140u.dll", 54);
-		d(L"r/bdo/vcomp140.dll", 55);
-		d(L"r/bdo/vccorlib140.dll", 56);
+		apimswincore_bulkdownload(L"r/bdo/");
+		download_file(L"r/bdo/msvcp140.dll", 44);
+		download_file(L"r/bdo/ucrtbase.dll", 45);
+		download_file(L"r/bdo/vcruntime140.dll", 46);
+		download_file(L"r/bdo/D3DCompiler_43.dll", 47);
+		download_file(L"r/bdo/concrt140.dll", 49);
+		download_file(L"r/bdo/mfc140u.dll", 53);
+		download_file(L"r/bdo/mfcm140u.dll", 54);
+		download_file(L"r/bdo/vcomp140.dll", 55);
+		download_file(L"r/bdo/vccorlib140.dll", 56);
 	}
 	else
 	{
-		a(L"");
-		d(L"msvcp140.dll", 44);
-		d(L"ucrtbase.dll", 45);
-		d(L"vcruntime140.dll", 46);
-		d(L"D3DCompiler_47.dll", 47);
-		d(L"concrt140.dll", 49);
-		d(L"mfc140u.dll", 53);
-		d(L"mfcm140u.dll", 54);
-		d(L"vcomp140.dll", 55);
-		d(L"vccorlib140.dll", 56);
+		apimswincore_bulkdownload(L"");
+		download_file(L"msvcp140.dll", 44);
+		download_file(L"ucrtbase.dll", 45);
+		download_file(L"vcruntime140.dll", 46);
+		download_file(L"D3DCompiler_47.dll", 47);
+		download_file(L"concrt140.dll", 49);
+		download_file(L"mfc140u.dll", 53);
+		download_file(L"mfcm140u.dll", 54);
+		download_file(L"vcomp140.dll", 55);
+		download_file(L"vccorlib140.dll", 56);
 	}
-	g(L"bin64", L"bdo");
-	if (r)
+	game(L"bin64", L"bdo");
+	if (restore)
 	{
-		d(L"r/bdo/x64/msvcp140.dll", 44);
-		d(L"r/bdo/x64/ucrtbase.dll", 45);
-		d(L"r/bdo/x64/vcruntime140.dll", 46);
-		d(L"r/bdo/x64/D3DCompiler_43.dll", 47);
-		d(L"r/bdo/x64/concrt140.dll", 49);
-		d(L"r/bdo/x64/mfc140u.dll", 53);
-		d(L"r/bdo/x64/mfcm140u.dll", 54);
-		d(L"r/bdo/x64/vcomp140.dll", 55);
-		d(L"r/bdo/x64/vccorlib140.dll", 56);
-		a(L"r/bdo/x64/");
-	}
-	else
-	{
-		d(L"6/msvcp140.dll", 44);
-		d(L"6/ucrtbase.dll", 45);
-		d(L"6/vcruntime140.dll", 46);
-		d(L"6/D3DCompiler_47.dll", 47);
-		d(L"6/concrt140.dll", 49);
-		d(L"6/mfc140u.dll", 53);
-		d(L"6/mfcm140u.dll", 54);
-		d(L"6/vcomp140.dll", 55);
-		d(L"6/vccorlib140.dll", 56);
-		a(L"6/");
-	}
-	if (r)
-	{
-		d(L"r/bdo/main/d3dcompiler_43.dll", 47);
-		d(L"r/bdo/main/d3dcompiler_46.dll", 57);
+		download_file(L"r/bdo/x64/msvcp140.dll", 44);
+		download_file(L"r/bdo/x64/ucrtbase.dll", 45);
+		download_file(L"r/bdo/x64/vcruntime140.dll", 46);
+		download_file(L"r/bdo/x64/D3DCompiler_43.dll", 47);
+		download_file(L"r/bdo/x64/concrt140.dll", 49);
+		download_file(L"r/bdo/x64/mfc140u.dll", 53);
+		download_file(L"r/bdo/x64/mfcm140u.dll", 54);
+		download_file(L"r/bdo/x64/vcomp140.dll", 55);
+		download_file(L"r/bdo/x64/vccorlib140.dll", 56);
+		apimswincore_bulkdownload(L"r/bdo/x64/");
 	}
 	else
 	{
-		d(L"D3DCompiler_47.dll", 47);
-		d(L"D3DCompiler_47.dll", 57);
+		download_file(L"6/msvcp140.dll", 44);
+		download_file(L"6/ucrtbase.dll", 45);
+		download_file(L"6/vcruntime140.dll", 46);
+		download_file(L"6/D3DCompiler_47.dll", 47);
+		download_file(L"6/concrt140.dll", 49);
+		download_file(L"6/mfc140u.dll", 53);
+		download_file(L"6/mfcm140u.dll", 54);
+		download_file(L"6/vcomp140.dll", 55);
+		download_file(L"6/vccorlib140.dll", 56);
+		apimswincore_bulkdownload(L"6/");
+	}
+	if (restore)
+	{
+		download_file(L"r/bdo/main/d3dcompiler_43.dll", 47);
+		download_file(L"r/bdo/main/d3dcompiler_46.dll", 57);
+	}
+	else
+	{
+		download_file(L"D3DCompiler_47.dll", 47);
+		download_file(L"D3DCompiler_47.dll", 57);
 	}
 
-	g(L"", L"bdo");
+	game(L"", L"bdo");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -633,15 +620,15 @@ void bdo(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void eso(bool r)
+void elderscrollsonline(bool restore)
 {
 	for (int i = 0; i < 7; i++)
 	{
 		*n[i] = '\0';
 	}
-	pc_end(L"eso.exe");
-	pc_end(L"eso64.exe");
-	cfg(L"es");
+	process_end(L"eso.exe");
+	process_end(L"eso64.exe");
+	ini_cfg(L"es");
 	p(0, L"game\\client");
 	_(1, 0, L"tbb.dll");
 	_(2, 0, L"tbbmalloc.dll");
@@ -651,27 +638,27 @@ void eso(bool r)
 	p(4, L"D3DCompiler_47.dll");
 	_(5, 0, L"eso.exe");
 	_(6, 0, L"eso64.exe");
-	if (r)
+	if (restore)
 	{
-		d(L"r/teso/tbb.dll", 1);
-		d(L"r/teso/tbbmalloc.dll", 2);
-		d(L"r/teso/x64/D3DCompiler_47.dll", 3);
-		d(L"r/teso/D3DCompiler_47.dll", 4);
+		download_file(L"r/teso/tbb.dll", 1);
+		download_file(L"r/teso/tbbmalloc.dll", 2);
+		download_file(L"r/teso/x64/D3DCompiler_47.dll", 3);
+		download_file(L"r/teso/D3DCompiler_47.dll", 4);
 	}
 	else
 	{
-		d(L"tbb12.dll", 1);
-		d(L"tbbmalloc.dll", 2);
-		d(L"6/D3DCompiler_47.dll", 3);
-		d(L"D3DCompiler_47.dll", 4);
+		download_file(L"tbb12.dll", 1);
+		download_file(L"tbbmalloc.dll", 2);
+		download_file(L"6/D3DCompiler_47.dll", 3);
+		download_file(L"D3DCompiler_47.dll", 4);
 	}
-	unblock_file(n[5]);
-	unblock_file(n[6]);
+	unblockfile(n[5]);
+	unblockfile(n[6]);
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
 	pi.nShow = 5;
-	if (x64())
+	if (determine_archx64())
 	{
 		pi.lpFile = n[6];
 	}
@@ -682,43 +669,43 @@ void eso(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void wt(bool r)
+void worldoftanks(bool restore)
 {
 	for (int i = 0; i < 46; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(L"wt");
+	ini_cfg(L"wt");
 	wchar_t wt[261] = L"WorldOfTanks.exe";
-	pc_end(L"WorldOfTanks.exe");
-	unblock_file(j(0, wt));
+	process_end(L"WorldOfTanks.exe");
+	unblockfile(j(0, wt));
 	_(41, 0, L"concrt140.dll");
 	_(42, 0, L"msvcp140.dll");
 	_(43, 0, L"tbb.dll");
 	_(44, 0, L"vcruntime140.dll");
 	_(45, 0, L"system");
 	_(46, 45, L"ucrtbase.dll");
-	if (r)
+	if (restore)
 	{
-		d(L"r/wt/concrt140.dll", 41);
-		d(L"r/wt/msvcp140.dll", 42);
-		d(L"r/wt/tbb.dll", 43);
-		d(L"r/wt/vcruntime140.dll", 44);
-		d(L"r/wt/ucrtbase.dll", 46);
+		download_file(L"r/wt/concrt140.dll", 41);
+		download_file(L"r/wt/msvcp140.dll", 42);
+		download_file(L"r/wt/tbb.dll", 43);
+		download_file(L"r/wt/vcruntime140.dll", 44);
+		download_file(L"r/wt/ucrtbase.dll", 46);
 		p(0, L"system");
-		a(L"r/wt/");
+		apimswincore_bulkdownload(L"r/wt/");
 	}
 	else
 	{
-		d(L"concrt140.dll", 41);
-		d(L"msvcp140.dll", 42);
-		d(L"tbb12.dll", 43);
-		d(L"vcruntime140.dll", 44);
-		d(L"ucrtbase.dll", 46);
+		download_file(L"concrt140.dll", 41);
+		download_file(L"msvcp140.dll", 42);
+		download_file(L"tbb12.dll", 43);
+		download_file(L"vcruntime140.dll", 44);
+		download_file(L"ucrtbase.dll", 46);
 		p(0, L"system");
-		a(L"");
+		apimswincore_bulkdownload(L"");
 	}
-	cfg(L"wt");
+	ini_cfg(L"wt");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -727,43 +714,43 @@ void wt(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void wws(bool r)
+void worldofwarships(bool restore)
 {
 	for (int i = 0; i < 46; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(L"ww");
+	ini_cfg(L"ww");
 	wchar_t www[261] = L"WorldOfWarships.exe";
-	pc_end(L"WorldOfWarships.exe");
-	unblock_file(j(0, www));
+	process_end(L"WorldOfWarships.exe");
+	unblockfile(j(0, www));
 	_(41, 0, L"msvcp140.dll");
 	_(42, 0, L"ucrtbase.dll");
 	_(43, 0, L"vcruntime140.dll");
 	_(44, 0, L"cef");
 	_(45, 44, L"d3dcompiler_43.dll");
 	_(46, 44, L"d3dcompiler_47.dll");
-	if (r)
+	if (restore)
 	{
-		a(L"r/wws/");
-		d(L"r/wws/msvcp140.dll", 41);
-		d(L"r/wws/ucrtbase.dll", 42);
-		d(L"r/wws/vcruntime140.dll", 43);
+		apimswincore_bulkdownload(L"r/wws/");
+		download_file(L"r/wws/msvcp140.dll", 41);
+		download_file(L"r/wws/ucrtbase.dll", 42);
+		download_file(L"r/wws/vcruntime140.dll", 43);
 		p(0, L"cef");
-		d(L"r/wws/d3dcompiler_43.dll", 45);
-		d(L"r/wws/d3dcompiler_47.dll", 46);
+		download_file(L"r/wws/d3dcompiler_43.dll", 45);
+		download_file(L"r/wws/d3dcompiler_47.dll", 46);
 	}
 	else
 	{
-		a(L"");
-		d(L"msvcp140.dll", 41);
-		d(L"ucrtbase.dll", 42);
-		d(L"vcruntime140.dll", 43);
+		apimswincore_bulkdownload(L"");
+		download_file(L"msvcp140.dll", 41);
+		download_file(L"ucrtbase.dll", 42);
+		download_file(L"vcruntime140.dll", 43);
 		p(0, L"cef");
-		d(L"D3DCompiler_47.dll", 45);
-		d(L"D3DCompiler_47.dll", 46);
+		download_file(L"D3DCompiler_47.dll", 45);
+		download_file(L"D3DCompiler_47.dll", 46);
 	}
-	cfg(L"ww");
+	ini_cfg(L"ww");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -772,19 +759,19 @@ void wws(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void _epic(bool r, bool last)
+void _epic(bool restore, bool last)
 {
 	if (last)
 	{
-		if (r)
+		if (restore)
 		{
-			d(L"r/epic/d3dcompiler_43.dll", 47);
-			d(L"r/epic/d3dcompiler_47.dll", 48);
+			download_file(L"r/epic/d3dcompiler_43.dll", 47);
+			download_file(L"r/epic/d3dcompiler_47.dll", 48);
 		}
 		else
 		{
-			d(L"6/D3DCompiler_47.dll", 47);
-			d(L"6/D3DCompiler_47.dll", 48);
+			download_file(L"6/D3DCompiler_47.dll", 47);
+			download_file(L"6/D3DCompiler_47.dll", 48);
 		}
 		pi = {};
 		pi.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -797,71 +784,71 @@ void _epic(bool r, bool last)
 	}
 	else
 	{
-		if (r)
+		if (restore)
 		{
-			a(L"r/epic/");
-			d(L"r/epic/concrt140.dll", 49);
-			d(L"r/epic/ucrtbase.dll", 45);
-			d(L"r/epic/vccorlib140.dll", 52);
-			d(L"r/epic/msvcp140.dll", 44);
-			d(L"r/epic/vcruntime140.dll", 46);
+			apimswincore_bulkdownload(L"r/epic/");
+			download_file(L"r/epic/concrt140.dll", 49);
+			download_file(L"r/epic/ucrtbase.dll", 45);
+			download_file(L"r/epic/vccorlib140.dll", 52);
+			download_file(L"r/epic/msvcp140.dll", 44);
+			download_file(L"r/epic/vcruntime140.dll", 46);
 		}
 		else
 		{
-			d(L"6/concrt140.dll", 49);
-			a(L"6/");
-			d(L"6/ucrtbase.dll", 45);
-			d(L"6/vccorlib140.dll", 52);
-			d(L"6/msvcp140.dll", 44);
-			d(L"6/vcruntime140.dll", 46);
+			download_file(L"6/concrt140.dll", 49);
+			apimswincore_bulkdownload(L"6/");
+			download_file(L"6/ucrtbase.dll", 45);
+			download_file(L"6/vccorlib140.dll", 52);
+			download_file(L"6/msvcp140.dll", 44);
+			download_file(L"6/vcruntime140.dll", 46);
 		}
 	}
 }
 
-void ut(bool r)
+void unrealtournament_alpha(bool restore)
 {
-	cfg(L"ut");
+	ini_cfg(L"ut");
 	wchar_t ut[261] = L"UE4-Win64-Shipping.exe";
-	pc_end(ut);
-	pc_end(L"EpicGamesLauncher.exe");
-	g(L"UnrealTournament\\Binaries\\Win64", L"ut");
-	_epic(r, false);
-	g(L"Engine\\Binaries\\Win64", L"ut");
-	unblock_file(j(0, ut));
-	_epic(r, false);
-	g(L"Engine\\Binaries\\ThirdParty\\CEF3\\Win64", L"ut");
-	_epic(r, true);
+	process_end(ut);
+	process_end(L"EpicGamesLauncher.exe");
+	game(L"UnrealTournament\\Binaries\\Win64", L"ut");
+	_epic(restore, false);
+	game(L"Engine\\Binaries\\Win64", L"ut");
+	unblockfile(j(0, ut));
+	_epic(restore, false);
+	game(L"Engine\\Binaries\\ThirdParty\\CEF3\\Win64", L"ut");
+	_epic(restore, true);
 }
 
-void tencentgb(bool r)
+void tencent_gamingbuddy(bool restore)
 {
-	e();
-	pc_end(L"AppMarket.exe");
-	pc_end(L"QQExternal.exe");
+	elevate_process();
+	process_end(L"AppMarket.exe");
+	process_end(L"QQExternal.exe");
 	for (auto i = 0; i < 44; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(L"tgb");
+	ini_cfg(L"tgb");
 	_(40, 0, L"msvcp140.dll");
 	_(41, 0, L"ucrtbase.dll");
 	_(42, 0, L"vcomp140.dll");
 	_(43, 0, L"vcruntime140.dll");
-	if (r)
+	if (restore)
 	{
-		a(L"r/tencentgb");
-		d(L"r/tencentgb/msvcp140.dll", 40);
-		d(L"r/tencentgb/ucrtbase.dll", 41);
-		d(L"r/tencentgb/vcomp140.dll", 42);
-		d(L"r/tencentgb/vcruntime140.dll", 43);
+		apimswincore_bulkdownload(L"r/tencentgb");
+		download_file(L"r/tencentgb/msvcp140.dll", 40);
+		download_file(L"r/tencentgb/ucrtbase.dll", 41);
+		download_file(L"r/tencentgb/vcomp140.dll", 42);
+		download_file(L"r/tencentgb/vcruntime140.dll", 43);
 	}
 	else
 	{
-		a(L"");
-		d(L"msvcp140.dll", 40);
-		d(L"ucrtbase.dll", 41);
-		d(L"vcomp140.dll", 42);
-		d(L"vcruntime140.dll", 43);
+		apimswincore_bulkdownload(L"");
+		download_file(L"msvcp140.dll", 40);
+		download_file(L"ucrtbase.dll", 41);
+		download_file(L"vcomp140.dll", 42);
+		download_file(L"vcruntime140.dll", 43);
 	}
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -870,23 +857,23 @@ void tencentgb(bool r)
 	pi.lpVerb = L"runas";
 	pi.lpFile = j(0, L"AppMarket.exe").c_str();
 	ShellExecuteEx(&pi);
-	unblock_file(j(0, L"AppMarket.exe"));
+	unblockfile(j(0, L"AppMarket.exe"));
 }
 
-void LoL(bool r)
+void leagueoflegends(bool restore)
 {
-	e();
+	elevate_process();
 	for (auto i = 0; i < 55; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(L"ll");
+	ini_cfg(L"ll");
 	std::wstring dir = n[0];
 
-	pc_end(L"League of Legends.exe");
-	pc_end(L"RiotClientUx.exe");
-	pc_end(L"RiotClientUxRender.exe");
-	pc_end(L"LeagueClient.exe");
+	process_end(L"League of Legends.exe");
+	process_end(L"RiotClientUx.exe");
+	process_end(L"RiotClientUxRender.exe");
+	process_end(L"LeagueClient.exe");
 	p(0, L"Riot Client");
 	_(44, 0, L"concrt140.dll");
 	_(45, 0, L"vcruntime140.dll");
@@ -894,21 +881,21 @@ void LoL(bool r)
 	_(47, 0, L"msvcp140.dll");
 
 
-	if (r)
+	if (restore)
 	{
-		a(L"r/lol");
-		d(L"r/lol/concrt140.dll", 44);
-		d(L"r/lol/vcruntime140.dll", 45);
-		d(L"r/lol/ucrtbase.dll", 46);
-		d(L"r/lol/msvcp140.dll", 47);
+		apimswincore_bulkdownload(L"r/lol");
+		download_file(L"r/lol/concrt140.dll", 44);
+		download_file(L"r/lol/vcruntime140.dll", 45);
+		download_file(L"r/lol/ucrtbase.dll", 46);
+		download_file(L"r/lol/msvcp140.dll", 47);
 	}
 	else
 	{
-		a(L"");
-		d(L"concrt140.dll", 44);
-		d(L"vcruntime140.dll", 45);
-		d(L"ucrtbase.dll", 46);
-		d(L"msvcp140.dll", 47);
+		apimswincore_bulkdownload(L"");
+		download_file(L"concrt140.dll", 44);
+		download_file(L"vcruntime140.dll", 45);
+		download_file(L"ucrtbase.dll", 46);
+		download_file(L"msvcp140.dll", 47);
 	}
 
 	p(0, L"UX");
@@ -917,29 +904,29 @@ void LoL(bool r)
 	_(46, 0, L"ucrtbase.dll");
 	_(47, 0, L"msvcp140.dll");
 	_(50, 0, L"d3dcompiler_47.dll");
-	if (r)
+	if (restore)
 	{
-		a(L"r/lol");
-		d(L"r/lol/concrt140.dll", 44);
-		d(L"r/lol/vcruntime140.dll", 45);
-		d(L"r/lol/ucrtbase.dll", 46);
-		d(L"r/lol/msvcp140.dll", 47);
-		d(L"r/lol/d3dcompiler_47.dll", 50);
+		apimswincore_bulkdownload(L"r/lol");
+		download_file(L"r/lol/concrt140.dll", 44);
+		download_file(L"r/lol/vcruntime140.dll", 45);
+		download_file(L"r/lol/ucrtbase.dll", 46);
+		download_file(L"r/lol/msvcp140.dll", 47);
+		download_file(L"r/lol/d3dcompiler_47.dll", 50);
 	}
 	else
 	{
-		a(L"");
-		d(L"concrt140.dll", 44);
-		d(L"vcruntime140.dll", 45);
-		d(L"ucrtbase.dll", 46);
-		d(L"msvcp140.dll", 47);
-		d(L"D3DCompiler_47.dll", 50);
+		apimswincore_bulkdownload(L"");
+		download_file(L"concrt140.dll", 44);
+		download_file(L"vcruntime140.dll", 45);
+		download_file(L"ucrtbase.dll", 46);
+		download_file(L"msvcp140.dll", 47);
+		download_file(L"D3DCompiler_47.dll", 50);
 	}
 	wcsncpy_s(n[0], dir.c_str(), _TRUNCATE);
 	p(0, L"League of Legends");
 	_(42, 0, L"Game");
-	unblock_file(j(42, L"League of Legends.exe"));
-	unblock_file(j(0, L"LeagueClient.exe"));
+	unblockfile(j(42, L"League of Legends.exe"));
+	unblockfile(j(0, L"LeagueClient.exe"));
 	_(49, 42, L"D3DCompiler_43.dll");
 	_(44, 0, L"concrt140.dll");
 	_(45, 0, L"vcruntime140.dll");
@@ -948,37 +935,37 @@ void LoL(bool r)
 	_(48, 42, L"tbb.dll");
 	_(50, 42, L"D3DCompiler_47.dll");
 	_(51, 0, L"D3DCompiler_47.dll");
-	if (r)
+	if (restore)
 	{
-		std::filesystem::remove(n[48]);
-		d(L"r/lol/D3DCompiler_43.dll", 42);
-		a(L"r/lol/");
-		d(L"r/lol/concrt140.dll", 44);
-		d(L"r/lol/vcruntime140.dll", 45);
-		d(L"r/lol/ucrtbase.dll", 46);
-		d(L"r/lol/msvcp140.dll", 47);
-		d(L"r/lol/D3DCompiler_43.dll", 49);
-		d(L"r/lol/d3dcompiler_47.dll", 50);
-		d(L"r/lol/d3dcompiler_47.dll", 51);
+		remove(n[48]);
+		download_file(L"r/lol/D3DCompiler_43.dll", 42);
+		apimswincore_bulkdownload(L"r/lol/");
+		download_file(L"r/lol/concrt140.dll", 44);
+		download_file(L"r/lol/vcruntime140.dll", 45);
+		download_file(L"r/lol/ucrtbase.dll", 46);
+		download_file(L"r/lol/msvcp140.dll", 47);
+		download_file(L"r/lol/D3DCompiler_43.dll", 49);
+		download_file(L"r/lol/d3dcompiler_47.dll", 50);
+		download_file(L"r/lol/d3dcompiler_47.dll", 51);
 	}
 	else
 	{
-		a(L"");
-		d(L"concrt140.dll", 44);
-		d(L"vcruntime140.dll", 45);
-		d(L"ucrtbase.dll", 46);
-		d(L"msvcp140.dll", 47);
-		d(L"D3DCompiler_47.dll", 50);
-		d(L"D3DCompiler_47.dll", 51);
-		if (x64())
+		apimswincore_bulkdownload(L"");
+		download_file(L"concrt140.dll", 44);
+		download_file(L"vcruntime140.dll", 45);
+		download_file(L"ucrtbase.dll", 46);
+		download_file(L"msvcp140.dll", 47);
+		download_file(L"D3DCompiler_47.dll", 50);
+		download_file(L"D3DCompiler_47.dll", 51);
+		if (determine_archx64())
 		{
-			d(L"6/tbb12.dll", 48);
-			d(L"6/D3DCompiler_47.dll", 49);
+			download_file(L"6/tbb12.dll", 48);
+			download_file(L"6/D3DCompiler_47.dll", 49);
 		}
 		else
 		{
-			d(L"tbb12.dll", 48);
-			d(L"D3DCompiler_47.dll", 49);
+			download_file(L"tbb12.dll", 48);
+			download_file(L"D3DCompiler_47.dll", 49);
 		}
 	}
 	pi = {};
@@ -989,72 +976,72 @@ void LoL(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void smite(bool r)
+void smite(bool restore)
 {
-	e();
-	pc_end(L"HirezLauncherUI.exe");
-	pc_end(L"Smite.exe");
-	pc_end(L"SteamLauncherUI.exe");
-	if (x64())
+	elevate_process();
+	process_end(L"HirezLauncherUI.exe");
+	process_end(L"Smite.exe");
+	process_end(L"SteamLauncherUI.exe");
+	if (determine_archx64())
 	{
 		for (auto i = 0; i < 7; i++)
 		{
 			*n[i] = '\0';
 		}
-		cfg(L"sm");
+		ini_cfg(L"sm");
 		p(0, L"Win64");
 		_(1, 0, L"tbbmalloc.dll");
 		_(2, 0, L"concrt140.dll");
 		_(3, 0, L"vccorlib140.dll");
 		_(4, 0, L"vcruntime140.dll");
 		_(5, 0, L"d3dcompiler_46.dll");
-		unblock_file(j(0, L"Smite.exe"));
-		if (r)
+		unblockfile(j(0, L"Smite.exe"));
+		if (restore)
 		{
-			d(L"r/hirez/s/x64/tbbmalloc.dll", 1);
-			d(L"r/hirez/s/x64/concrt140.dll", 2);
-			d(L"r/hirez/s/x64/vccorlib140.dll", 3);
-			d(L"r/hirez/s/x64/vcruntime140.dll", 4);
-			d(L"r/hirez/s/x64/d3dcompiler_46.dll", 5);
+			download_file(L"r/hirez/s/x64/tbbmalloc.dll", 1);
+			download_file(L"r/hirez/s/x64/concrt140.dll", 2);
+			download_file(L"r/hirez/s/x64/vccorlib140.dll", 3);
+			download_file(L"r/hirez/s/x64/vcruntime140.dll", 4);
+			download_file(L"r/hirez/s/x64/d3dcompiler_46.dll", 5);
 		}
 		else
 		{
-			d(L"6/tbbmalloc.dll", 1);
-			d(L"6/concrt140.dll", 2);
-			d(L"6/vccorlib140.dll", 3);
-			d(L"6/vcruntime140.dll", 4);
-			d(L"6/D3DCompiler_47.dll", 5);
+			download_file(L"6/tbbmalloc.dll", 1);
+			download_file(L"6/concrt140.dll", 2);
+			download_file(L"6/vccorlib140.dll", 3);
+			download_file(L"6/vcruntime140.dll", 4);
+			download_file(L"6/D3DCompiler_47.dll", 5);
 		}
 	}
 	for (auto i = 0; i < 7; i++)
 	{
 		*n[i] = '\0';
 	}
-	cfg(L"sm");
+	ini_cfg(L"sm");
 	p(0, L"Win32");
 	_(1, 0, L"tbbmalloc.dll");
 	_(2, 0, L"concrt140.dll");
 	_(3, 0, L"vccorlib140.dll");
 	_(4, 0, L"vcruntime140.dll");
 	_(5, 0, L"d3dcompiler_46.dll");
-	unblock_file(j(0, L"Smite.exe"));
-	if (r)
+	unblockfile(j(0, L"Smite.exe"));
+	if (restore)
 	{
-		d(L"r/hirez/s/tbbmalloc.dll", 1);
-		d(L"r/hirez/s/concrt140.dll", 2);
-		d(L"r/hirez/s/vccorlib140.dll", 3);
-		d(L"r/hirez/s/vcruntime140.dll", 4);
-		d(L"r/hirez/s/d3dcompiler_46.dll", 5);
+		download_file(L"r/hirez/s/tbbmalloc.dll", 1);
+		download_file(L"r/hirez/s/concrt140.dll", 2);
+		download_file(L"r/hirez/s/vccorlib140.dll", 3);
+		download_file(L"r/hirez/s/vcruntime140.dll", 4);
+		download_file(L"r/hirez/s/d3dcompiler_46.dll", 5);
 	}
 	else
 	{
-		d(L"tbbmalloc.dll", 1);
-		d(L"concrt140.dll", 2);
-		d(L"vccorlib140.dll", 3);
-		d(L"vcruntime140.dll", 4);
-		d(L"D3DCompiler_47.dll", 5);
+		download_file(L"tbbmalloc.dll", 1);
+		download_file(L"concrt140.dll", 2);
+		download_file(L"vccorlib140.dll", 3);
+		download_file(L"vcruntime140.dll", 4);
+		download_file(L"D3DCompiler_47.dll", 5);
 	}
-	cfg(L"sm");
+	ini_cfg(L"sm");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -1064,44 +1051,44 @@ void smite(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void pala(bool r)
+void paladins(bool restore)
 {
-	e();
-	pc_end(L"HirezLauncherUI.exe");
-	pc_end(L"Paladins.exe");
-	pc_end(L"SteamLauncherUI.exe");
-	if (x64())
+	elevate_process();
+	process_end(L"HirezLauncherUI.exe");
+	process_end(L"Paladins.exe");
+	process_end(L"SteamLauncherUI.exe");
+	if (determine_archx64())
 	{
 		*n[0] = '\0';
 		*n[1] = '\0';
-		cfg(L"pl");
+		ini_cfg(L"pl");
 		p(0, L"Win64");
 		_(1, 0, L"tbbmalloc.dll");
-		unblock_file(j(0, L"Paladins.exe"));
-		if (r)
+		unblockfile(j(0, L"Paladins.exe"));
+		if (restore)
 		{
-			d(L"r/hirez/p/x64/tbbmalloc.dll", 1);
+			download_file(L"r/hirez/p/x64/tbbmalloc.dll", 1);
 		}
 		else
 		{
-			d(L"6/tbbmalloc.dll", 1);
+			download_file(L"6/tbbmalloc.dll", 1);
 		}
 	}
 	*n[0] = '\0';
 	*n[1] = '\0';
-	cfg(L"pl");
+	ini_cfg(L"pl");
 	p(0, L"Win32");
 	_(1, 0, L"tbbmalloc.dll");
-	unblock_file(j(0, L"Paladins.exe"));
-	if (r)
+	unblockfile(j(0, L"Paladins.exe"));
+	if (restore)
 	{
-		d(L"r/hirez/p/tbbmalloc.dll", 1);
+		download_file(L"r/hirez/p/tbbmalloc.dll", 1);
 	}
 	else
 	{
-		d(L"tbbmalloc.dll", 1);
+		download_file(L"tbbmalloc.dll", 1);
 	}
-	cfg(L"pl");
+	ini_cfg(L"pl");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -1111,20 +1098,20 @@ void pala(bool r)
 	ShellExecuteEx(&pi);
 }
 
-void java_mc()
+void java_minecraft()
 {
-	e();
+	elevate_process();
 	*n[0] = '\0';
 	p(0, cp);
-	if (x64())
+	if (determine_archx64())
 	{
 		p(0, L"java15.exe");
-		d(L"jdk-16_windows-x64_bin.exe", 0);
+		download_file(L"jdk-16_windows-x64_bin.exe", 0);
 	}
 	else
 	{
 		p(0, L"java8.exe");
-		d(L"jre-8u281.exe", 0);
+		download_file(L"jre-8u281.exe", 0);
 	}
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -1137,8 +1124,8 @@ void java_mc()
 	{
 		WaitForSingleObject(pi.hProcess, INFINITE);
 	}
-	std::filesystem::remove(n[0]);
-	if (x64())
+	remove(n[0]);
+	if (determine_archx64())
 	{
 		MessageBox(nullptr,
 		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16\\bin\\javaw.exe",
@@ -1152,26 +1139,26 @@ void java_mc()
 	}
 }
 
-void dx_unblocked()
+void deblock_directx9()
 {
-	e();
+	elevate_process();
 	*n[82] = '\0';
 	p(82, cp);
-	p(82, L"t_");
-	std::filesystem::create_directory(n[82]);
+	p(82, L"temp_dx");
+	create_directory(n[82]);
 	for (auto i = 0; i < 77; i++)
 	{
 		*n[i] = '\0';
 		_(i, 82, dx[i]);
-		d(&std::wstring(L"9/" + std::wstring(dx[i]))[0], i);
+		download_file(&std::wstring(L"9/" + std::wstring(dx[i]))[0], i);
 	}
-	if (x64())
+	if (determine_archx64())
 	{
 		for (auto i = 0; i < 75; i++)
 		{
 			*n[i] = '\0';
-			_(i, 82, dx64[i]);
-			d(&std::wstring(L"9/" + std::wstring(dx64[i]))[0], i);
+			_(i, 82, dx_64[i]);
+			download_file(&std::wstring(L"9/" + std::wstring(dx_64[i]))[0], i);
 		}
 	}
 
@@ -1182,9 +1169,9 @@ void dx_unblocked()
 		};
 		*n[i] = '\0';
 		_(i, 82, dx_install[i]);
-		d(&std::wstring(L"9/" + std::wstring(dx_install[i]))[0], i);
+		download_file(&std::wstring(L"9/" + std::wstring(dx_install[i]))[0], i);
 	}
-	pc_end(L"DXSETUP.exe");
+	process_end(L"DXSETUP.exe");
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
 	pi.fMask = 64;
@@ -1197,17 +1184,20 @@ void dx_unblocked()
 	{
 		WaitForSingleObject(pi.hProcess, INFINITE);
 	}
-	std::filesystem::remove_all(n[82]);
+	remove_all(n[82]);
 }
 
-void boot_sequence()
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+                      _In_opt_ HINSTANCE hPrevInstance,
+                      _In_ LPWSTR lpCmdLine,
+                      _In_ int nCmdShow)
 {
-	if (x64())
+	if (determine_archx64())
 	{
 		*n[0] = '\0';
 		p(0, &cp[0]);
 		p(0, L"vcredist_x64.exe");
-		d(L"vcredist_x64.exe", 0);
+		download_file(L"vcredist_x64.exe", 0);
 		pi = {};
 		pi.cbSize = sizeof(SHELLEXECUTEINFO);
 		pi.fMask = 64;
@@ -1228,7 +1218,7 @@ void boot_sequence()
 		*n[0] = '\0';
 		p(0, &cp[0]);
 		p(0, L"vcredist_x86.exe");
-		d(L"vcredist_x86.exe", 0);
+		download_file(L"vcredist_x86.exe", 0);
 		pi = {};
 		pi.cbSize = sizeof(SHELLEXECUTEINFO);
 		pi.fMask = 64;
@@ -1244,13 +1234,7 @@ void boot_sequence()
 		DeleteFile(n[0]);
 		*n[0] = '\0';
 	}
-}
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                      _In_opt_ HINSTANCE hPrevInstance,
-                      _In_ LPWSTR lpCmdLine,
-                      _In_ int nCmdShow)
-{
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -1321,16 +1305,15 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	boot_sequence();
 	hInst = hInstance; // Store instance handle in our global variable
 
 	HWND hWnd = CreateWindow(szWindowClass, L"MOBASuite", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT,
 	                         CW_USEDEFAULT, 470, 180,
 	                         nullptr, nullptr, hInstance, nullptr);
 
-	CreateWindow(L"BUTTON", L"Install", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
+	CreateWindow(L"BUTTON", L"Patch", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, 10, 10, 100,
 	             100, hWnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
-	CreateWindow(L"BUTTON", L"Uninstall", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
+	CreateWindow(L"BUTTON", L"Restore", WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 350, 10, 100,
 	             100, hWnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
 	HWND hWndComboBox = CreateWindow(WC_COMBOBOX, L"",
 	                                 CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE,
@@ -1379,7 +1362,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				switch (c)
 				{
 				case 0:
-					LoL(false);
+					leagueoflegends(false);
 					break;
 				case 1:
 					smite(false);
@@ -1388,34 +1371,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					dota2(false);
 					break;
 				case 3:
-					ut(false);
+					unrealtournament_alpha(false);
 					break;
 				case 4:
-					java_mc();
+					java_minecraft();
 					break;
 				case 5:
-					bdo(false);
+					blackdesertonline_remastered(false);
 					break;
 				case 6:
-					pala(false);
+					paladins(false);
 					break;
 				case 7:
-					wt(false);
+					worldoftanks(false);
 					break;
 				case 8:
-					wws(false);
+					worldofwarships(false);
 					break;
 				case 9:
 					lineage(false);
 					break;
 				case 10:
-					eso(false);
+					elderscrollsonline(false);
 					break;
 				case 11:
-					tencentgb(false);
+					tencent_gamingbuddy(false);
 					break;
 				case 12:
-					dx_unblocked();
+					deblock_directx9();
 					break;
 				default: ;
 				}
@@ -1425,7 +1408,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				switch (c)
 				{
 				case 0:
-					LoL(true);
+					leagueoflegends(true);
 					break;
 				case 1:
 					smite(true);
@@ -1434,28 +1417,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					dota2(true);
 					break;
 				case 3:
-					ut(true);
+					unrealtournament_alpha(true);
 					break;
 				case 5:
-					bdo(true);
+					blackdesertonline_remastered(true);
 					break;
 				case 6:
-					pala(true);
+					paladins(true);
 					break;
 				case 7:
-					wt(true);
+					worldoftanks(true);
 					break;
 				case 8:
-					wws(true);
+					worldofwarships(true);
 					break;
 				case 9:
 					lineage(true);
 					break;
 				case 10:
-					eso(true);
+					elderscrollsonline(true);
 					break;
 				case 11:
-					tencentgb(true);
+					tencent_gamingbuddy(true);
 					break;
 				}
 			}
