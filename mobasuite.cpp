@@ -301,23 +301,25 @@ void apimswincore_bulkdownload(const wchar_t* url)
 
 bool determine_archx64()
 {
-    BOOL bIsWow64 = FALSE;
+	BOOL bIsWow64 = FALSE;
 
-    //IsWow64Process is not available on all supported versions of Windows.
-    //Use GetModuleHandle to get a handle to the DLL that contains the function
-    //and GetProcAddress to get a pointer to the function if available.
+	typedef BOOL(APIENTRY* LPFN_ISWOW64PROCESS)
+		(HANDLE, PBOOL);
 
-    fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
-        GetModuleHandle(TEXT("kernel32")),"IsWow64Process");
+	LPFN_ISWOW64PROCESS fnIsWow64Process;
 
-    if(NULL != fnIsWow64Process)
-    {
-        if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64))
-        {
-            //handle error
-        }
-    }
-    return bIsWow64;
+	HMODULE module = GetModuleHandle(_T("kernel32"));
+	const char funcName[] = "IsWow64Process";
+	fnIsWow64Process = (LPFN_ISWOW64PROCESS)
+		GetProcAddress(module, funcName);
+
+	if (NULL != fnIsWow64Process)
+	{
+		if (!fnIsWow64Process(GetCurrentProcess(),
+			&bIsWow64))
+			throw std::exception("Unknown error");
+	}
+	return bIsWow64 != FALSE;
 }
 
 void ini_cfg(const std::wstring& key)
