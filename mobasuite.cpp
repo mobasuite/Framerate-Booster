@@ -369,13 +369,6 @@ void ini_cfg(const std::wstring& key)
 		{
 			i.lpszTitle = L"<program files>\\Black Desert Online";
 		}
-		const auto dl = SHBrowseForFolderW(&i);
-		if (dl == nullptr)
-		{
-			_exit(0);
-		}
-		SHGetPathFromIDListW(dl, n[0]);
-
 		if (key == L"dota2")
 		{
 			p(0, L"steamapps\\common\\dota 2 beta\\game\\bin");
@@ -396,6 +389,12 @@ void ini_cfg(const std::wstring& key)
 		{
 			p(0, L"Lineage II");
 		}
+		const auto dl = SHBrowseForFolderW(&i);
+		if (dl == nullptr)
+		{
+			_exit(0);
+		}
+		SHGetPathFromIDListW(dl, n[0]);
 		WritePrivateProfileString(L"Path", key.c_str(), n[0], n[82]);
 	}
 }
@@ -508,6 +507,7 @@ void dota2(bool restore)
 	}
 	pi.lpFile = j(0, L"dota2.exe").c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void lineage(bool restore)
@@ -551,6 +551,7 @@ void lineage(bool restore)
 	pi.lpParameters = L"/LauncherID:\"NCWest\" /CompanyID:\"12\" /GameID:\"LINEAGE2\" /LUpdateAddr:\"updater.nclauncher.ncsoft.com\"";
 	pi.lpFile = j(0, L"NCWest\\NCLauncher\\NCLauncher.exe").c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void blackdesertonline_remastered(bool restore)
@@ -630,6 +631,7 @@ void blackdesertonline_remastered(bool restore)
 	pi.nShow = 5;
 	pi.lpFile = L"Black Desert Online Launcher.exe";
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void elderscrollsonline(bool restore)
@@ -679,6 +681,7 @@ void elderscrollsonline(bool restore)
 		pi.lpFile = n[5];
 	}
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void worldoftanks(bool restore)
@@ -724,6 +727,7 @@ void worldoftanks(bool restore)
 	pi.nShow = 5;
 	pi.lpFile = j(0, wt).c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void worldofwarships(bool restore)
@@ -769,6 +773,7 @@ void worldofwarships(bool restore)
 	pi.nShow = 5;
 	pi.lpFile = j(0, www).c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void _epic(bool restore, bool last)
@@ -815,6 +820,7 @@ void _epic(bool restore, bool last)
 			download_file(L"6/vcruntime140.dll", 46);
 		}
 	}
+	_exit(0);
 }
 
 void unrealtournament_alpha(bool restore)
@@ -830,6 +836,7 @@ void unrealtournament_alpha(bool restore)
 	_epic(restore, false);
 	game(L"Engine\\Binaries\\ThirdParty\\CEF3\\Win64", L"ut");
 	_epic(restore, true);
+	_exit(0);
 }
 
 void tencent_gamingbuddy(bool restore)
@@ -870,6 +877,7 @@ void tencent_gamingbuddy(bool restore)
 	pi.lpFile = j(0, L"AppMarket.exe").c_str();
 	ShellExecuteEx(&pi);
 	unblockfile(j(0, L"AppMarket.exe"));
+	_exit(0);
 }
 
 void leagueoflegends(bool restore)
@@ -986,6 +994,7 @@ void leagueoflegends(bool restore)
 	pi.nShow = 5;
 	pi.lpFile = j(0, L"LeagueClient.exe").c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void smite(bool restore)
@@ -1061,6 +1070,7 @@ void smite(bool restore)
 	pi.lpParameters = L"game=300 product=17";
 	pi.lpFile = j(0, L"SteamLauncherUI.exe").c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void paladins(bool restore)
@@ -1108,6 +1118,7 @@ void paladins(bool restore)
 	pi.lpParameters = L"game=400 product=402";
 	pi.lpFile = j(0, L"SteamLauncherUI.exe").c_str();
 	ShellExecuteEx(&pi);
+	_exit(0);
 }
 
 void java_minecraft()
@@ -1149,6 +1160,7 @@ void java_minecraft()
 		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jre-8u281\\bin\\javaw.exe",
 		           L"Instructions", MB_OK);
 	}
+	_exit(0);
 }
 
 void deblock_directx9()
