@@ -2,7 +2,13 @@
 //
 
 #include "framework.h"
-#include "mobasuite.h"
+#include "resource.h"
+// Custom MOBASuite Header Files
+#include <Shlobj_core.h>
+#include <Tlhelp32.h>
+#include <filesystem>
+#include <shellapi.h>
+#include <CommCtrl.h>
 using namespace std::filesystem;
 
 #define MAX_LOADSTRING 100
@@ -820,7 +826,6 @@ void _epic(bool restore, bool last)
 			download_file(L"6/vcruntime140.dll", 46);
 		}
 	}
-	_exit(0);
 }
 
 void unrealtournament_alpha(bool restore)
