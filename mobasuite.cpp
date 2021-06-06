@@ -1142,7 +1142,7 @@ void java_minecraft()
 	else
 	{
 		p(0, L"java8.exe");
-		download_file(L"jre-8u281.exe", 0);
+		download_file(L"jre-8u291-windows-i586.exe", 0);
 	}
 	pi = {};
 	pi.cbSize = sizeof(SHELLEXECUTEINFO);
