@@ -782,14 +782,14 @@ void worldofwarships(bool restore)
 	_exit(0);
 }
 
-void _epic(bool restore, bool last)
+void epic_launcher(bool restore, bool lastsequence)
 {
-	if (last)
+	if (lastsequence)
 	{
 		if (restore)
 		{
-			download_file(L"r/epic/d3dcompiler_43.dll", 47);
-			download_file(L"r/epic/d3dcompiler_47.dll", 48);
+			download_file(L"r/ut/d3dcompiler_43.dll", 47);
+			download_file(L"r/ut/d3dcompiler_47.dll", 48);
 		}
 		else
 		{
@@ -804,17 +804,18 @@ void _epic(bool restore, bool last)
 		SHGetSpecialFolderPathW(nullptr, n[0], 42, 0);
 		pi.lpFile = j(0, L"Epic Games\\Launcher\\Portal\\Binaries\\Win32\\EpicGamesLauncher.exe").c_str();
 		ShellExecuteEx(&pi);
+		_exit(0);
 	}
 	else
 	{
 		if (restore)
 		{
-			apimswincore_bulkdownload(L"r/epic/");
-			download_file(L"r/epic/concrt140.dll", 49);
-			download_file(L"r/epic/ucrtbase.dll", 45);
-			download_file(L"r/epic/vccorlib140.dll", 52);
-			download_file(L"r/epic/msvcp140.dll", 44);
-			download_file(L"r/epic/vcruntime140.dll", 46);
+			apimswincore_bulkdownload(L"r/ut/");
+			download_file(L"r/ut/concrt140.dll", 49);
+			download_file(L"r/ut/ucrtbase.dll", 45);
+			download_file(L"r/ut/vccorlib140.dll", 52);
+			download_file(L"r/ut/msvcp140.dll", 44);
+			download_file(L"r/ut/vcruntime140.dll", 46);
 		}
 		else
 		{
@@ -831,17 +832,19 @@ void _epic(bool restore, bool last)
 void unrealtournament_alpha(bool restore)
 {
 	ini_cfg(L"ut");
-	wchar_t ut[261] = L"UE4-Win64-Shipping.exe";
-	process_end(ut);
+	process_end(L"UE4-Win64-Shipping.exe");
 	process_end(L"EpicGamesLauncher.exe");
+
+	// Part 1
+	game(L"UnrealTournament\\UnrealTournament\\Binaries\\Win64", L"ut");
+	epic_launcher(restore, false);
 	game(L"UnrealTournament\\Binaries\\Win64", L"ut");
-	_epic(restore, false);
-	game(L"Engine\\Binaries\\Win64", L"ut");
-	unblockfile(j(0, ut));
-	_epic(restore, false);
-	game(L"Engine\\Binaries\\ThirdParty\\CEF3\\Win64", L"ut");
-	_epic(restore, true);
-	_exit(0);
+	epic_launcher(restore, false);
+	game(L"UnrealTournament\\Engine\\Binaries\\Win64", L"ut");
+	unblockfile(j(0, L"UE4-Win64-Shipping.exe"));
+	epic_launcher(restore, false);
+	game(L"UnrealTournament\\Engine\\Binaries\\ThirdParty\\CEF3\\Win64", L"ut");
+	epic_launcher(restore, true);
 }
 
 void tencent_gamingbuddy(bool restore)
@@ -1490,7 +1493,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps);
-			// TODO: Add any drawing code that uses hdc here...
+			MessageBox(nullptr,
+				L"MOBASuite will close the game-launcher/game before patching and will open it after.",
+				L"Instructions", MB_OK);
 			EndPaint(hWnd, &ps);
 		}
 		break;
