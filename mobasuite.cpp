@@ -1136,8 +1136,8 @@ void java_minecraft()
 	p(0, cp);
 	if (determine_archx64())
 	{
-		p(0, L"java15.exe");
-		download_file(L"jdk-16_windows-x64_bin.exe", 0);
+		p(0, L"java16.exe");
+		download_file(L"jdk-16.0.1_windows-x64_bin.exe", 0);
 	}
 	else
 	{
