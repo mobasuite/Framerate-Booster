@@ -1159,7 +1159,7 @@ void java_minecraft()
 	if (determine_archx64())
 	{
 		MessageBox(nullptr,
-		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16\\bin\\javaw.exe",
+		           L"Minecraft > Launch Options > Advanced > Java Executable Path > Program Files\\Java\\jdk-16.0.1\\bin\\javaw.exe",
 		           L"Instructions", MB_OK);
 	}
 	else
