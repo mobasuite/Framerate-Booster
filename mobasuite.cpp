@@ -11,7 +11,7 @@
 #include <CommCtrl.h>
 using namespace std::filesystem;
 
-#define MAX_LOADSTRING 100
+constexpr auto MAX_LOADSTRING = 100;
 
 // Global Variables:
 HINSTANCE hInst; // current instance
@@ -1435,7 +1435,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				default: ;
 				}
 			}
-			if (LOWORD(wParam) == 2)
+			else if (LOWORD(wParam) == 1)
 			{
 				switch (c)
 				{
@@ -1489,16 +1489,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				return DefWindowProc(hWnd, message, wParam, lParam);
 			}
 		}
-	case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint(hWnd, &ps);
-			MessageBox(nullptr,
-				L"MOBASuite will close the game-launcher/game before patching and will open it after.",
-				L"Instructions", MB_OK);
-			EndPaint(hWnd, &ps);
-		}
-		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
