@@ -908,7 +908,6 @@ void leagueoflegends(bool restore)
 	_(46, 0, L"ucrtbase.dll");
 	_(47, 0, L"msvcp140.dll");
 
-
 	if (restore)
 	{
 		apimswincore_bulkdownload(L"r/lol");
@@ -963,6 +962,9 @@ void leagueoflegends(bool restore)
 	_(48, 42, L"tbb.dll");
 	_(50, 42, L"D3DCompiler_47.dll");
 	_(51, 0, L"D3DCompiler_47.dll");
+	_(52, 0, L"msvcp140_1.dll");
+	_(53, 0, L"msvcp140_2.dll");
+
 	if (restore)
 	{
 		remove(n[48]);
@@ -975,6 +977,8 @@ void leagueoflegends(bool restore)
 		download_file(L"r/lol/D3DCompiler_43.dll", 49);
 		download_file(L"r/lol/d3dcompiler_47.dll", 50);
 		download_file(L"r/lol/d3dcompiler_47.dll", 51);
+		download_file(L"r/lol/msvcp140_1.dll", 52);
+		download_file(L"r/lol/msvcp140_2.dll", 53);
 	}
 	else
 	{
@@ -985,6 +989,8 @@ void leagueoflegends(bool restore)
 		download_file(L"msvcp140.dll", 47);
 		download_file(L"D3DCompiler_47.dll", 50);
 		download_file(L"D3DCompiler_47.dll", 51);
+		download_file(L"msvcp140_1.dll", 52);
+		download_file(L"msvcp140_2.dll", 53);
 		if (determine_archx64())
 		{
 			download_file(L"6/tbb12.dll", 48);
