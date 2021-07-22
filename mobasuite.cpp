@@ -1435,7 +1435,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				default: ;
 				}
 			}
-			else if (LOWORD(wParam) == 1)
+			else if (LOWORD(wParam) == 2)
 			{
 				switch (c)
 				{
